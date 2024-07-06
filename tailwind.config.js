@@ -12,7 +12,8 @@ export default {
       '10/1': '10%'
       },
       height: {
-      '95/1': '95%'
+      '95/1': '95%',
+      '50/1': '50%'
       },
       flexBasis:{
         '50/1': '50%'
@@ -23,6 +24,12 @@ export default {
       },
       fontFamily: {
         'poppins': '"Poppins", sans-serif'
+      },
+      backgroundColor: {
+        'gfn' : 'rgb(70, 180, 70)'
+      },
+      padding: {
+        'center': '500px'
       }
     },
   },

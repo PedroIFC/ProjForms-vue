@@ -1,18 +1,18 @@
 <script setup>
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 
 const user = ref({
     name: '',
     email: '',
     password: '',
-    born: '',
-    address: '',
-    state: '',
+    dataNasc: '',
+    endereco: '',
+    cidade: '',
+    estado: 'none',
     linguagens: [],
     bio: '',
 })
 
-const cidadeUser = ref([""])
 
 const estados = ref([
     { 'name': 'Acre', 'sigla': 'AC' },
@@ -45,7 +45,7 @@ const estados = ref([
     { 'name': 'Estrangeiro', 'sigla': 'EX' }
 ])
 
-const hobbiesSelecionado = ref([])
+
 
 const linguagens = ref([' C#', ' Python', ' C++', ' JavaScript', ' PHP', ' Swift', ' Java', ' Go', ' SQL', ' Ruby'])
 
@@ -66,50 +66,54 @@ function ocultarInfoBtn() {
 <template>
     <main>
         <transition name="form" mode="out-in">
-            <forms v-if="mostrarInformacoes == true"
-                class="flex justify-center items-center w-screen h-screen bg-green-500">
+            <form v-if="mostrarInformacoes" class="flex justify-center items-center w-screen h-screen bg-purple-600"
+                @submit.prevent="ocultarInfoBtn">
                 <div class="flex flex-col w-40/1 h-95/1 rounded-xl bg-white overflow-y-auto px-16">
                     <div class="flex sticky justify-center w-full font-poppins py-5">
                         <h1 class="text-6xl">Forms</h1>
                     </div>
-                    <div class="flex flex-row w-full px-10">
+                    <div class="flex flex-row w-full px-10 justify-between">
                         <div class="w-45/1">
-                            <input class="input-css w-full border-b-green-500 border-b-2 " v-model="user.name"
+                            <input class="input-css w-full border-greenp border-b-2 " v-model="user.name"
                                 placeholder="Nome" type="text" required>
                         </div>
-                        <div class="w-10/1"></div>
                         <div class="w-45/1">
-                            <input class="input-css w-full" v-model="user.email" placeholder="Email" type="email" required>
+                            <input class="input-css w-full" v-model="user.email" placeholder="Email" type="email"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row w-full px-10 justify-between pt-5">
+                        <div class="w-45/1">
+                            <input class="input-css" v-model="user.password" placeholder="Senha" type="password"
+                                required>
+                        </div>
+
+                        <div class="w-45/1">
+                            <input class="input-css" v-model="user.confirmPassword" placeholder="Confirme sua senha"
+                                type="password" required>
                         </div>
                     </div>
 
                     <div class="flex flex-col w-full px-10 gap-5 mt-5">
                         <div class="sobre-input">
-                            <input class="input-css" v-model="user.password" placeholder="Senha" type="password" required>
+                            <input class="input-css" v-model="user.dataNasc" placeholder="Data de Nascimento"
+                                type="text" onfocus="this.type='date'" required>
                         </div>
 
                         <div class="sobre-input">
-                            <input class="input-css" v-model="user.confirmPassword" placeholder="Confirme sua senha"
-                                type="password" required>
+                            <input class="input-css" v-model="user.endereco" placeholder="Endereço" type="text"
+                                required>
                         </div>
 
                         <div class="sobre-input">
-                            <input class="input-css" v-model="user.born" placeholder="Data de Nascimento" type="text"
-                                onfocus="this.type='date'" required>
+                            <input class="input-css" v-model="user.cidade" placeholder="Cidade" type="text" required>
                         </div>
 
                         <div class="sobre-input">
-                            <input class="input-css" v-model="user.address" placeholder="Endereço" type="text" required>
-                        </div>
-
-                        <div class="sobre-input">
-                            <input class="input-css" v-model="user.cidadeUser" placeholder="Cidade" type="text" required>
-                        </div>
-
-                        <div class="sobre-input">
-                            <select v-model="estado" class="input-css select-css" name="" id="">
+                            <select v-model="user.estado" class="input-css select-css  " name="" id="">
                                 <option disabled selected value="none">Estado</option>
-                                <option class="op-css" v-for="(value, index) in estados" :key="index" value="value.sigla">
+                                <option class="op-css" v-for="(value, index) in estados" :key="index">
                                     {{ value.name }} - {{ value.sigla }}
                                 </option>
                             </select>
@@ -117,39 +121,92 @@ function ocultarInfoBtn() {
                         <div class="sobre-input">
                             <input class="input-css" v-model="user.hobbies" placeholder="Hobbies" type="text" required>
                         </div>
+                        <div class="sobre-input">
+                            <textarea class="input-css border-2 border-gfn border-solid rounded-xl" type="text"
+                                v-model="user.bio" placeholder="Biografia" />
+                        </div>
                         <div class="sobre-inputs-2">
-                            <div class="">
-                                <label for="">Linguagens de programação</label>
+                            <div class="text-center">
+                                <label class="label-prog">Linguagens de programação</label>
                             </div>
-                            <div class="columns-5">
-                                <label v-for="(value, index) of linguagens" :key="index" class="flex flex-col items-center">
+                            <div class="columns-5 pt-5">
+                                <label v-for="(value, index) of linguagens" :key="index"
+                                    class="flex flex-col items-center container">
                                     {{ value }}
-                                    <input type="checkbox" v-model="user.linguagens" :value="value">
+                                    <input checked="checked" type="checkbox" v-model="user.linguagens" :value="value">
+                                    <div class="checkmark"></div>
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="flex justify-center p-5">
-                        <button @click="ocultarInfoBtn()" class="bg-green-500 text-white rounded-2xl w-28 p-2"
-                            type="submit">
-                            enviar
-                        </button>
+                        <input  class="bg-purple-600 text-white rounded-2xl w-28 p-2 cursor-pointer" type="submit" />
                     </div>
                 </div>
-            </forms>
+            </form>
 
             <!--Reultado Formulario-->
 
             <div v-else @submit.prevent="mostrarInfoBtn"
-                class="flex justify-center items-center w-screen h-screen bg-green-500">
-                <div class="flex flex-col w-40/1 h-95/1 rounded-xl bg-white overflow-y-auto px-16 bg-red-400">
+                class="flex flex-col justify-center items-center w-screen h-screen bg-purple-600">
+                <div class="flex flex-col w-70/1 h-50/1 rounded-xl bg-white overflow-y-auto px-16 ">
                     <div class="flex sticky justify-center w-full font-poppins py-5">
-                        <h1 class="text-6xl font-poppins">Forms</h1>
+                        <h1 class="text-6xl font-poppins">Infos</h1>
+                    </div>
+                    <div class="flex justify-between">
+                        <div class="flex flex-col w-45/1 gap-4">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                                <label class="infoLabel" for="nomeID">Nome:</label>
+                                <input class="px-1" type="text" disabled id="nomeID" :value="user.name">
+                            </div>
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                                <label class="infoLabel" for="senhaID">Senha:</label>
+                                <input class="px-1" type="text" disabled id="senhaID" :value="user.password">
+                            </div>
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                                <label class="infoLabel" for="endereçoID">Endereço:</label>
+                                <input class="px-1" type="text" disabled id="endereçoID" :value="user.endereco">
+                            </div>
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                                <label class="infoLabel" for="estadoID">Estado:</label>
+                                <input class="px-1" type="text" disabled id="estadoID" :value="user.estado">
+                            </div>
+                        </div>
+                        <div class="flex flex-col w-45/1 gap-4">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                                <label class="infoLabel" for="emailID">Email:</label>
+                                <input class="px-1" type="text" disabled id="emailID" :value="user.email">
+                            </div>
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                                <label class="infoLabel" for="dataNascID">Data de Nascimento:</label>
+                                <input class="px-1" type="text" disabled id="dataNascID" :value="user.dataNasc">
+                            </div>
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                                <label class="infoLabel" for="cidadeID">Cidade:</label>
+                                <input class="px-1" type="text" disabled id="cidadeID" :value="user.cidade">
+                            </div>
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                                <label class="infoLabel" for="hobbiesID">Hobbies:</label>
+                                <input class="px-1" type="text" disabled id="hobbiesID" :value="user.hobbies">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss my-4 items-center">
+                            <label class="infoLabel" for="linguagensID">Linguagem(s) de programação:</label>
+                            <input class="px-1 w-full text-center" type="text" id="linguagensID" disabled :value="user.linguagens">
+                        </div>
+                        <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss mb-4">
+                            <label class="infoLabel" for="bioID">Biografia:</label>
+                            <textarea class="px-1" type="text" disabled id="bioID" :value="user.bio"> </textarea>
+                        </div>
                     </div>
                     
-                    </div>
+
                 </div>
+                <input  class="bg-white text-purple-600 rounded-2xl w-28 p-2 cursor-pointer mt-4 text-center" disabled value="Editar"  />
             </div>
+
 
 
         </transition>
@@ -157,16 +214,27 @@ function ocultarInfoBtn() {
 </template>
 
 <style>
+* {
+    font-family: 'poppins';
+}
+
+
 input:focus,
 .select-css:focus {
     outline: none;
     color: #000
 }
 
-input,
-.select-css,
+
+.select-css {
+    appearance: none;
+    border-bottom: 2px solid rgb(147 51 234 / var(--tw-bg-opacity));
+    background-color: transparent;
+}
+
+.input-css,
 .op-css {
-    border-bottom: 2px solid rgb(70, 180, 70);
+    border-bottom: 2px solid rgb(147 51 234 / var(--tw-bg-opacity));
     background-color: transparent;
 }
 
@@ -179,11 +247,109 @@ input,
 }
 
 .input-css {
+    padding: 10px;
     width: 100%;
     font-size: larger;
 }
 
 .input-css::placeholder {
     color: #000;
+}
+
+.label-prog {
+    font-size: larger;
+    padding: 10px;
+}
+
+.border-gfn {
+    border: 0.16rem solid rgb(147 51 234 / var(--tw-bg-opacity));
+}
+
+.border-greenp {
+    border-color: rgb(147 51 234 / var(--tw-bg-opacity));
+}
+
+
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.container {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+}
+
+
+.checkmark {
+    --clr: rgb(70, 180, 70);
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: #ccc;
+    border-radius: 50%;
+    transition: 300ms;
+}
+
+
+.container input:checked~.checkmark {
+    background-color: var(--clr);
+    border-radius: .5rem;
+    animation: pulse 500ms ease-in-out;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+.container input:checked~.checkmark:after {
+    display: block;
+}
+
+.container .checkmark:after {
+    left: 0.45em;
+    top: 0.25em;
+    width: 0.25em;
+    height: 0.5em;
+    border: solid #E0E0E2;
+    border-width: 0 0.15em 0.15em 0;
+    transform: rotate(45deg);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 #0B6E4F90;
+        rotate: 20deg;
+    }
+
+    50% {
+        rotate: -20deg;
+    }
+
+    75% {
+        box-shadow: 0 0 0 10px #0B6E4F60;
+    }
+
+    100% {
+        box-shadow: 0 0 0 13px #0B6E4F30;
+        rotate: 0;
+    }
+}
+
+.infoLabel{
+    font-size: 10px;
+    padding-bottom: px;
+    color: rgb(90, 90, 90);
 }
 </style>
