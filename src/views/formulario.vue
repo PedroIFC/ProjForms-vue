@@ -51,14 +51,15 @@ const linguagens = ref([' C#', ' Python', ' C++', ' JavaScript', ' PHP', ' Swift
 
 const confirmPassword = ref("")
 
-let mostrarInformacoes = ref(true)
+const mostrarInformacoes = ref(true)
 
-function mostrarInfoBtn() {
-    mostrarInformacoes.value = true
-}
-
-function ocultarInfoBtn() {
-    mostrarInformacoes.value = false
+function InfoBtn() {
+    if (user.value.password == confirmPassword.value) {
+        mostrarInformacoes.value = !mostrarInformacoes.value
+    }
+    else{
+        alert('Senhas divergentes!')
+    }
 }
 
 </script>
@@ -66,8 +67,8 @@ function ocultarInfoBtn() {
 <template>
     <main>
         <transition name="form" mode="out-in">
-            <form v-if="mostrarInformacoes" class="flex justify-center items-center w-screen h-screen bg-purple-600"
-                @submit.prevent="ocultarInfoBtn">
+            <form v-if="mostrarInformacoes" class="flex justify-center items-center w-screen h-screen bg-purple-900"
+                @submit.prevent="InfoBtn">
                 <div class="flex flex-col w-40/1 h-95/1 rounded-xl bg-white overflow-y-auto px-16">
                     <div class="flex sticky justify-center w-full font-poppins py-5">
                         <h1 class="text-6xl">Forms</h1>
@@ -90,7 +91,7 @@ function ocultarInfoBtn() {
                         </div>
 
                         <div class="w-45/1">
-                            <input class="input-css" v-model="user.confirmPassword" placeholder="Confirme sua senha"
+                            <input class="input-css" v-model="confirmPassword" placeholder="Confirme sua senha"
                                 type="password" required>
                         </div>
                     </div>
@@ -140,71 +141,74 @@ function ocultarInfoBtn() {
                         </div>
                     </div>
                     <div class="flex justify-center p-5">
-                        <input  class="bg-purple-600 text-white rounded-2xl w-28 p-2 cursor-pointer" type="submit" />
+                        <input class="bg-purple-900 text-white rounded-2xl w-28 p-2 cursor-pointer font-medium"
+                            type="submit" />
                     </div>
                 </div>
             </form>
 
             <!--Reultado Formulario-->
 
-            <div v-else @submit.prevent="mostrarInfoBtn"
-                class="flex flex-col justify-center items-center w-screen h-screen bg-purple-600">
+            <div v-else class="flex flex-col justify-center items-center w-screen h-screen bg-purple-900">
                 <div class="flex flex-col w-70/1 h-50/1 rounded-xl bg-white overflow-y-auto px-16 ">
                     <div class="flex sticky justify-center w-full font-poppins py-5">
                         <h1 class="text-6xl font-poppins">Infos</h1>
                     </div>
                     <div class="flex justify-between">
                         <div class="flex flex-col w-45/1 gap-4">
-                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md">
                                 <label class="infoLabel" for="nomeID">Nome:</label>
                                 <input class="px-1" type="text" disabled id="nomeID" :value="user.name">
                             </div>
-                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md">
                                 <label class="infoLabel" for="senhaID">Senha:</label>
                                 <input class="px-1" type="text" disabled id="senhaID" :value="user.password">
                             </div>
-                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md">
                                 <label class="infoLabel" for="endereçoID">Endereço:</label>
                                 <input class="px-1" type="text" disabled id="endereçoID" :value="user.endereco">
                             </div>
-                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md">
                                 <label class="infoLabel" for="estadoID">Estado:</label>
                                 <input class="px-1" type="text" disabled id="estadoID" :value="user.estado">
                             </div>
                         </div>
                         <div class="flex flex-col w-45/1 gap-4">
-                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md">
                                 <label class="infoLabel" for="emailID">Email:</label>
                                 <input class="px-1" type="text" disabled id="emailID" :value="user.email">
                             </div>
-                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md">
                                 <label class="infoLabel" for="dataNascID">Data de Nascimento:</label>
                                 <input class="px-1" type="text" disabled id="dataNascID" :value="user.dataNasc">
                             </div>
-                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md">
                                 <label class="infoLabel" for="cidadeID">Cidade:</label>
                                 <input class="px-1" type="text" disabled id="cidadeID" :value="user.cidade">
                             </div>
-                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss">
+                            <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md">
                                 <label class="infoLabel" for="hobbiesID">Hobbies:</label>
                                 <input class="px-1" type="text" disabled id="hobbiesID" :value="user.hobbies">
                             </div>
                         </div>
                     </div>
                     <div>
-                        <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss my-4 items-center">
+                        <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md my-4 items-center">
                             <label class="infoLabel" for="linguagensID">Linguagem(s) de programação:</label>
-                            <input class="px-1 w-full text-center" type="text" id="linguagensID" disabled :value="user.linguagens">
+                            <input class="px-1 w-full text-center" type="text" id="linguagensID" disabled
+                                :value="user.linguagens">
                         </div>
-                        <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-ss mb-4">
+                        <div class="flex flex-col border-2 border-gray bg-gray-200 rounded-md mb-4">
                             <label class="infoLabel" for="bioID">Biografia:</label>
                             <textarea class="px-1" type="text" disabled id="bioID" :value="user.bio"> </textarea>
                         </div>
                     </div>
-                    
+
 
                 </div>
-                <input  class="bg-white text-purple-600 rounded-2xl w-28 p-2 cursor-pointer mt-4 text-center" disabled value="Editar"  />
+                <input @click="InfoBtn()"
+                    class="bg-white text-purple-900 rounded-2xl w-28 p-2 cursor-pointer mt-4 text-center font-medium"
+                    type="button" value="Editar" />
             </div>
 
 
@@ -228,13 +232,13 @@ input:focus,
 
 .select-css {
     appearance: none;
-    border-bottom: 2px solid rgb(147 51 234 / var(--tw-bg-opacity));
+    border-bottom: 2px solid rgb(88 28 135 / var(--tw-bg-opacity));
     background-color: transparent;
 }
 
 .input-css,
 .op-css {
-    border-bottom: 2px solid rgb(147 51 234 / var(--tw-bg-opacity));
+    border-bottom: 2px solid rgb(88 28 135 / var(--tw-bg-opacity));
     background-color: transparent;
 }
 
@@ -262,11 +266,11 @@ input:focus,
 }
 
 .border-gfn {
-    border: 0.16rem solid rgb(147 51 234 / var(--tw-bg-opacity));
+    border: 0.16rem solid rgb(88 28 135 / var(--tw-bg-opacity));
 }
 
 .border-greenp {
-    border-color: rgb(147 51 234 / var(--tw-bg-opacity));
+    border-color: rgb(88 28 135 / var(--tw-bg-opacity));
 }
 
 
@@ -347,7 +351,7 @@ input:focus,
     }
 }
 
-.infoLabel{
+.infoLabel {
     font-size: 10px;
     padding-bottom: px;
     color: rgb(90, 90, 90);
